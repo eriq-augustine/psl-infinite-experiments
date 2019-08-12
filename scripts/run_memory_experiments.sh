@@ -70,7 +70,7 @@ function run_example() {
         for pageSize in ${PAGE_SIZES}; do
             echo "    Running DCD (${pageSize})."
             outDir="${baseOutDir}/dcd_$(printf '%08d' ${pageSize})"
-            options='--infer DCDStreamingInference -D dcd.printinitialobj=false'
+            options='--infer DCDStreamingInference -D dcd.printinitialobj=false -D dcdstreaming.warnunsupportedrules=false'
             run "${cliDir}" "${outDir}" "${options}"
         done
     done
