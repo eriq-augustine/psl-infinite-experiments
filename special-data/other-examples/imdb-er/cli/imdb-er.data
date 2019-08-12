@@ -1,0 +1,18 @@
+predicates:
+    CANDSAME/2:
+        - closed
+        - block
+    SIM/2: closed
+    INMOVIE/2: closed
+    INREF/2: closed
+    SAME/2:
+        - open
+
+observations:
+    CANDSAME: ../data/imdb-er/candsame.txt
+    SIM: ../data/imdb-er/sim.txt
+    INMOVIE: ../data/imdb-er/inmovie.txt
+    INREF: ../data/imdb-er/inref.txt
+
+targets:
+    SAME: ../data/imdb-er/same_targets.txt
