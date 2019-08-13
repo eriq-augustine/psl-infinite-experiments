@@ -7,8 +7,6 @@ readonly PSL_EXAMPLES_REPO='https://github.com/linqs/psl-examples.git'
 readonly PSL_EXAMPLES_BRANCH='develop'
 
 readonly SPECIAL_DATA_DIR="${BASE_DIR}/special-data"
-readonly FAMILIAL_ER_DIR="${SPECIAL_DATA_DIR}/other-examples/familial-er"
-readonly IMDB_ER_DIR="${SPECIAL_DATA_DIR}/other-examples/imdb-er"
 
 readonly POSTGRES_DB='psl'
 readonly BASE_PSL_OPTION="--postgres ${POSTGRES_DB} -D log4j.threshold=TRACE -D persistedatommanager.throwaccessexception=false"
@@ -39,8 +37,7 @@ function special_fixes() {
    sed -i "s/^readonly SIZE='.*'$/readonly SIZE='${ER_DATA_SZIE}'/" "${PSL_EXAMPLES_DIR}/entity-resolution/data/fetchData.sh"
 
    # Copy in other examples
-   cp -r "${FAMILIAL_ER_DIR}" "${PSL_EXAMPLES_DIR}/"
-   cp -r "${IMDB_ER_DIR}" "${PSL_EXAMPLES_DIR}/"
+   cp -r "${SPECIAL_DATA_DIR}/other-examples/"* "${PSL_EXAMPLES_DIR}/"
 }
 
 # Common to all examples.
