@@ -1,0 +1,18 @@
+// If J1,J2 have similar observed ratings, then U will rate them similarly
+24.6309114207: SimObsRating(J1,J2) & Rating(U,J1) >> Rating(U,J2) ^2
+
+// If U1,U2 have similar observed ratings, then J will have similar rating
+// Uncomment this for super large nnumber of grounding
+24.6309114207: USimObsRating(U1,U2) & Rating(U1,J) >> Rating(U2,J) ^2
+
+// Ratings should concentrate around observed User/Joke averages
+48.525720618: User(U) & Joke(J) & AvgUserRatingObs(U) >> Rating(U,J) ^2
+97.5572737936: User(U) & Joke(J) & AvgJokeRatingObs(J) >> Rating(U,J) ^2
+100.0: User(U) & Joke(J) & Rating(U,J) >> AvgUserRatingObs(U) ^2
+1.72750622255: User(U) & Joke(J) & Rating(U,J) >> AvgJokeRatingObs(J) ^2
+
+// Two-sided prior
+59.3173672711: User(U) & Joke(J) & RatingPrior('0') >> Rating(U, J) ^2
+0.0149816380952: Rating(U,J) >> RatingPrior('0') ^2
+
+0.5: !Rating(U, J) ^2

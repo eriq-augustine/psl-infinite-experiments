@@ -1,0 +1,25 @@
+predicates:
+   AvgJokeRatingObs/1: closed
+   AvgUserRatingObs/1: closed
+   Joke/1: closed
+   RatingPrior/1: closed
+   SimObsRating/2: closed
+   USimObsRating/2: closed
+   User/1: closed
+   Rating/2: open
+
+observations:
+   AvgJokeRatingObs: ../data/jester-full/0/avg_joke_rating.tsv
+   AvgUserRatingObs: ../data/jester-full/0/avg_user_rating.tsv
+   Joke: ../data/jester-full/0/jokes.tsv
+   RatingPrior: ../data/jester-full/0/ratingPrior_obs.txt
+   SimObsRating: ../data/jester-full/0/sim_joke.tsv
+   USimObsRating: ../data/jester-full/0/sim_user.tsv
+   User: ../data/jester-full/0/users.tsv
+   Rating: ../data/jester-full/0/rating_obs.tsv
+
+targets:
+   Rating: ../data/jester-full/0/rating_target.tsv
+
+truth:
+   Rating: ../data/jester-full/0/rating_truth.tsv

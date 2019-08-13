@@ -1,0 +1,21 @@
+71.2136094047 :  (B != C) & (A != B) & KNOWS(A, C) & TRUSTS(B, C) & TRUSTS(A, B) & (A != C) & KNOWS(A, B) & KNOWS(B, C) >> TRUSTS(A, C) ^2
+11.88702751 :  (B != C) & (A != B) & KNOWS(A, C) & TRUSTS(A, B) & (A != C) & KNOWS(A, B) & KNOWS(B, C) & ~TRUSTS(B, C) >> ~TRUSTS(A, C) ^2
+7.75730289387 :  (B != C) & ~TRUSTS(A, B) & (A != B) & KNOWS(A, C) & TRUSTS(B, C) & (A != C) & KNOWS(A, B) & KNOWS(B, C) >> ~TRUSTS(A, C) ^2
+0.733541276809 :  (B != C) & ~TRUSTS(A, B) & (A != B) & KNOWS(A, C) & (A != C) & KNOWS(A, B) & KNOWS(B, C) & ~TRUSTS(B, C) >> TRUSTS(A, C) ^2
+97.8515634258 :  (B != C) & (A != B) & KNOWS(A, C) & TRUSTS(A, B) & (A != C) & KNOWS(C, B) & TRUSTS(C, B) & KNOWS(A, B) >> TRUSTS(A, C)
+18.9195671564 :  (B != C) & ~TRUSTS(C, B) & (A != B) & KNOWS(A, C) & TRUSTS(A, B) & (A != C) & KNOWS(C, B) & KNOWS(A, B) >> ~TRUSTS(A, C) ^2
+39.8297610957 :  (B != C) & ~TRUSTS(A, B) & (A != B) & KNOWS(A, C) & (A != C) & KNOWS(C, B) & TRUSTS(C, B) & KNOWS(A, B) >> ~TRUSTS(A, C) ^2
+82.0583738541 :  (B != C) & ~TRUSTS(A, B) & ~TRUSTS(C, B) & (A != B) & KNOWS(A, C) & (A != C) & KNOWS(C, B) & KNOWS(A, B) >> TRUSTS(A, C) ^2
+0.340841160135 :  (B != C) & (A != B) & KNOWS(B, A) & KNOWS(A, C) & TRUSTS(B, C) & (A != C) & TRUSTS(B, A) & KNOWS(B, C) >> TRUSTS(A, C) ^2
+28.148660685 :  (B != C) & (A != B) & KNOWS(B, A) & KNOWS(A, C) & (A != C) & TRUSTS(B, A) & KNOWS(B, C) & ~TRUSTS(B, C) >> ~TRUSTS(A, C) ^2
+24.0470091728 :  (B != C) & (A != B) & KNOWS(B, A) & KNOWS(A, C) & ~TRUSTS(B, A) & TRUSTS(B, C) & (A != C) & KNOWS(B, C) >> ~TRUSTS(A, C) ^2
+1.25939431838 :  (B != C) & (A != B) & KNOWS(B, A) & KNOWS(A, C) & ~TRUSTS(B, A) & (A != C) & KNOWS(B, C) & ~TRUSTS(B, C) >> TRUSTS(A, C) ^2
+28.638601326 :  (B != C) & (A != B) & KNOWS(B, A) & KNOWS(A, C) & (A != C) & KNOWS(C, B) & TRUSTS(C, B) & TRUSTS(B, A) >> TRUSTS(A, C) ^2
+20.3559968195 :  (B != C) & ~TRUSTS(C, B) & (A != B) & KNOWS(B, A) & KNOWS(A, C) & (A != C) & KNOWS(C, B) & TRUSTS(B, A) >> ~TRUSTS(A, C) ^2
+48.5896691989 :  (B != C) & (A != B) & KNOWS(B, A) & KNOWS(A, C) & ~TRUSTS(B, A) & (A != C) & KNOWS(C, B) & TRUSTS(C, B) >> ~TRUSTS(A, C) ^2
+100.0 :  (B != C) & ~TRUSTS(C, B) & (A != B) & KNOWS(B, A) & KNOWS(A, C) & ~TRUSTS(B, A) & (A != C) & KNOWS(C, B) >> TRUSTS(A, C) ^2
+49.4822635497 :  KNOWS(B, A) & TRUSTS(A, B) & KNOWS(A, B) >> TRUSTS(B, A) ^2
+40.8594732233 :  ~TRUSTS(A, B) & KNOWS(B, A) & KNOWS(A, B) >> ~TRUSTS(B, A) ^2
+61.3503947441 :  PRIOR('0') & KNOWS(A, B) >> TRUSTS(A, B) ^2
+2.29277763529 :  TRUSTS(A, B) & KNOWS(A, B) >> PRIOR('0') ^2
+0.5 : ~TRUSTS(A, B) ^2
