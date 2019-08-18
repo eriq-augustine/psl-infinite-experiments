@@ -14,6 +14,8 @@ readonly BSOE_DIR='/soe'
 readonly NUM_RUNS=10
 readonly PAGE_SIZES='10 100 1000 10000 100000 1000000'
 
+readonly STANDARD_SGD_OPTIONS='-D sgd.maxiterations=5000'
+
 function clearPostgresCache() {
     if [[ -d "${BSOE_DIR}" ]]; then
         "${BSOE_CLEAR_CACHE_SCRIPT}"
@@ -48,31 +50,38 @@ function run() {
 
 function run_example() {
     local exampleDir=$1
+    local iteration=$2
 
     local exampleName=`basename "${exampleDir}"`
     local cliDir="$exampleDir/cli"
 
-    echo "Running example: ${exampleName}."
-
     local outDir=''
     local options=''
 
-    for i in `seq -w 1 ${NUM_RUNS}`; do
-        local baseOutDir="${BASE_OUT_DIR}/${i}/${exampleName}"
+    local baseOutDir="${BASE_OUT_DIR}/${iteration}/${exampleName}"
 
-        # Run a standard ADMM run.
-        echo "    Running base."
-        outDir="${baseOutDir}/admm"
-        options=''
+    # Run a standard ADMM run.
+    echo "Running ${exampleName} -- base."
+    outDir="${baseOutDir}/admm"
+    options=''
+    run "${cliDir}" "${outDir}" "${options}"
+
+    # Run a SGD run.
+    echo "Running ${exampleName} -- Memory SGD."
+    outDir="${baseOutDir}/sgd_memory"
+    options="-D inference.reasoner=SGDReasoner -D inference.termstore=SGDMemoryTermStore -D inference.termgenerator=SGDTermGenerator ${STANDARD_SGD_OPTIONS}"
+    run "${cliDir}" "${outDir}" "${options}"
+
+    # Now run SGD with different page sizes.
+    for pageSize in ${PAGE_SIZES}; do
+        echo "Running ${exampleName} -- Streaming SGD (${pageSize})."
+        outDir="${baseOutDir}/sgd_streaming_$(printf '%08d' ${pageSize})"
+        options="--infer SGDStreamingInference ${STANDARD_SGD_OPTIONS}"
+
+        options="${options} -D streamingtermstore.warnunsupportedrules=false"
+        options="${options} -D streamingtermstore.pagesize=${pageSize}"
+
         run "${cliDir}" "${outDir}" "${options}"
-
-        # Now run DCD with different page sizes.
-        for pageSize in ${PAGE_SIZES}; do
-            echo "    Running DCD (${pageSize})."
-            outDir="${baseOutDir}/dcd_$(printf '%08d' ${pageSize})"
-            options='--infer DCDStreamingInference -D dcd.printinitialobj=false -D dcdstreaming.warnunsupportedrules=false'
-            run "${cliDir}" "${outDir}" "${options}"
-        done
     done
 }
 
@@ -84,10 +93,10 @@ function main() {
 
     trap exit SIGINT
 
-    local exampleDir=$1
-
-    for exampleDir in "$@"; do
-        run_example "${exampleDir}"
+    for i in `seq -w 1 ${NUM_RUNS}`; do
+        for exampleDir in "$@"; do
+            run_example "${exampleDir}" "${i}"
+        done
     done
 }
 

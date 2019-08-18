@@ -16,7 +16,9 @@ readonly STRING_IDS='entity-resolution simple-acquaintances user-modeling'
 
 readonly ER_DATA_SZIE='large'
 
-readonly MEM_GB='25'
+readonly AVAILABLE_MEM_KB=$(cat /proc/meminfo | grep 'MemTotal' | sed 's/^[^0-9]\+\([0-9]\+\)[^0-9]\+$/\1/')
+# Floor by multiples of 5 and then reserve an additional 5 GB.
+readonly JAVA_MEM_GB=$((32886836 / 1024 / 1024 / 5 * 5 - 5))
 
 function fetch_psl_examples() {
    if [ -e ${PSL_EXAMPLES_DIR} ]; then
@@ -58,7 +60,7 @@ function standard_fixes() {
             cp "${baseName}.psl" "${baseName}-learned.psl"
 
             # Increase memory allocation.
-            sed -i "s/java -jar/java -Xmx${MEM_GB}G -Xms${MEM_GB}G -jar/" run.sh
+            sed -i "s/java -jar/java -Xmx${JAVA_MEM_GB}G -Xms${JAVA_MEM_GB}G -jar/" run.sh
 
             # Disable weight learning.
             sed -i 's/^\(\s\+\)runWeightLearning/\1# runWeightLearning/' run.sh

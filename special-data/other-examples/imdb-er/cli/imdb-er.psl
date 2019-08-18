@@ -22,4 +22,5 @@
 0.3: CANDSAME(R1, R2) & CANDSAME(R1, R3) & SAME(R1, R2) & INMOVIE(R2, M) & INMOVIE(R3, M) -> !SAME(R1, R3)
 
 // Symmetry (Depends on the data)
-Same(R1, R2) = Same(R2, R1) .
+// Same(R1, R2) = Same(R2, R1) .
+10.0: Same(R1, R2) = Same(R2, R1) .
