@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DATASETS='citeseer cora epinions familial-er imdb-er jester jester-full lastfm yelp'
+# DATASETS='citeseer cora epinions familial-er imdb-er jester jester-full lastfm yelp'
+DATASETS='citeseer cora epinions familial-er jester jester-full lastfm yelp'
 
 function main() {
     trap exit SIGINT

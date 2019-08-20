@@ -14,6 +14,7 @@ readonly BSOE_DIR='/soe'
 readonly NUM_RUNS=10
 readonly PAGE_SIZES='10 100 1000 10000 100000 1000000'
 
+readonly STANDARD_PSL_OPTIONS='-D runtimestats.collect=true'
 readonly STANDARD_SGD_OPTIONS='-D sgd.maxiterations=5000'
 
 function clearPostgresCache() {
@@ -63,23 +64,31 @@ function run_example() {
     # Run a standard ADMM run.
     echo "Running ${exampleName} -- base."
     outDir="${baseOutDir}/admm"
-    options=''
+
+    options="${STANDARD_PSL_OPTIONS}"
+
     run "${cliDir}" "${outDir}" "${options}"
 
     # Run a SGD run.
     echo "Running ${exampleName} -- Memory SGD."
     outDir="${baseOutDir}/sgd_memory"
-    options="-D inference.reasoner=SGDReasoner -D inference.termstore=SGDMemoryTermStore -D inference.termgenerator=SGDTermGenerator ${STANDARD_SGD_OPTIONS}"
+
+    options="${STANDARD_PSL_OPTIONS}"
+    options="${options} -D inference.reasoner=SGDReasoner -D inference.termstore=SGDMemoryTermStore -D inference.termgenerator=SGDTermGenerator"
+    options="${options} ${STANDARD_SGD_OPTIONS}"
+
     run "${cliDir}" "${outDir}" "${options}"
 
     # Now run SGD with different page sizes.
     for pageSize in ${PAGE_SIZES}; do
         echo "Running ${exampleName} -- Streaming SGD (${pageSize})."
         outDir="${baseOutDir}/sgd_streaming_$(printf '%08d' ${pageSize})"
-        options="--infer SGDStreamingInference ${STANDARD_SGD_OPTIONS}"
 
+        options="${STANDARD_PSL_OPTIONS}"
+        options="${options} --infer SGDStreamingInference"
         options="${options} -D streamingtermstore.warnunsupportedrules=false"
         options="${options} -D streamingtermstore.pagesize=${pageSize}"
+        options="${options} ${STANDARD_SGD_OPTIONS}"
 
         run "${cliDir}" "${outDir}" "${options}"
     done
