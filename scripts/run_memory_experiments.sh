@@ -17,6 +17,9 @@ readonly PAGE_SIZES='10 100 1000 10000 100000 1000000'
 readonly STANDARD_PSL_OPTIONS='-D runtimestats.collect=true'
 readonly STANDARD_SGD_OPTIONS='-D sgd.maxiterations=5000'
 
+readonly SHUFFLE_OPTIONS='-D streamingtermstore.shufflepage=true -D readonly streamingtermstore.randomizepageaccess=true'
+readonly NO_SHUFFLE_OPTIONS='-D streamingtermstore.shufflepage=false -D readonly streamingtermstore.randomizepageaccess=false'
+
 function clearPostgresCache() {
     if [[ -d "${BSOE_DIR}" ]]; then
         "${BSOE_CLEAR_CACHE_SCRIPT}"
@@ -81,13 +84,28 @@ function run_example() {
 
     # Now run SGD with different page sizes.
     for pageSize in ${PAGE_SIZES}; do
-        echo "Running ${exampleName} -- Streaming SGD (${pageSize})."
+        # Shuffle
+        echo "Running ${exampleName} -- Streaming SGD (${pageSize}, shuffle)."
         outDir="${baseOutDir}/sgd_streaming_$(printf '%08d' ${pageSize})"
 
         options="${STANDARD_PSL_OPTIONS}"
         options="${options} --infer SGDStreamingInference"
         options="${options} -D streamingtermstore.warnunsupportedrules=false"
         options="${options} -D streamingtermstore.pagesize=${pageSize}"
+        options="${options} ${SHUFFLE_OPTIONS}"
+        options="${options} ${STANDARD_SGD_OPTIONS}"
+
+        run "${cliDir}" "${outDir}" "${options}"
+
+        # Shuffle
+        echo "Running ${exampleName} -- Streaming SGD (${pageSize}, no shuffle)."
+        outDir="${baseOutDir}/sgd_streaming_$(printf '%08d' ${pageSize})_noshuffle"
+
+        options="${STANDARD_PSL_OPTIONS}"
+        options="${options} --infer SGDStreamingInference"
+        options="${options} -D streamingtermstore.warnunsupportedrules=false"
+        options="${options} -D streamingtermstore.pagesize=${pageSize}"
+        options="${options} ${NO_SHUFFLE_OPTIONS}"
         options="${options} ${STANDARD_SGD_OPTIONS}"
 
         run "${cliDir}" "${outDir}" "${options}"
