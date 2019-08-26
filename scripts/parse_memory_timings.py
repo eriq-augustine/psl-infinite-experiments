@@ -56,31 +56,31 @@ def parse_log(path):
                 row[KEY_INFERENCE_TIME] = time - inference_start
                 continue
 
-            match = re.search(r'Total Memory \(bytes\) -- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+)', line)
+            match = re.search(r'Total Memory \(bytes\)\s+-- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+)', line)
             if (match is not None):
                 continue
 
-            match = re.search(r'Free Memory \(bytes\) -- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+)', line)
+            match = re.search(r'Free Memory \(bytes\)\s+-- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+)', line)
             if (match is not None):
                 continue
 
-            match = re.search(r'Used Memory \(bytes\) -- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+)', line)
+            match = re.search(r'Used Memory \(bytes\)\s+-- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+)', line)
             if (match is not None):
                 row[KEY_MAX_MEMORY] = int(match.group(2))
                 row[KEY_MEAN_MEMORY] = int(match.group(3))
                 continue
 
-            match = re.search(r'Max Memory \(bytes\) -- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+)', line)
+            match = re.search(r'Max Memory \(bytes\)\s+-- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+)', line)
             if (match is not None):
                 continue
 
-            match = re.search(r'IO Reads \(bytes\)     -- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+), Total:\s*(\d+)', line)
+            match = re.search(r'IO Reads \(bytes\)\s+-- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+), Total:\s*(\d+)', line)
             if (match is not None):
                 row[KEY_READ_OPS] = int(match.group(4))
                 row[KEY_READ_BYTES] = int(match.group(5))
                 continue
 
-            match = re.search(r'IO Writes \(bytes\)    -- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+), Total:\s*(\d+)', line)
+            match = re.search(r'IO Writes \(bytes\)\s+-- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+), Total:\s*(\d+)', line)
             if (match is not None):
                 row[KEY_WRITE_OPS] = int(match.group(4))
                 row[KEY_WRITE_BYTES] = int(match.group(5))
