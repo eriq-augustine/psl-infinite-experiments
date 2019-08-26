@@ -12,6 +12,8 @@ KEY_DATASET = 'Dataset'
 KEY_METHOD = 'Method'
 KEY_INFERENCE_TIME = 'Inference Time'
 KEY_NUM_ITERATIONS = 'Inference Iterations'
+KEY_NUM_VARIABLES = 'Variables'
+KEY_NUM_TERMS = 'Terms'
 KEY_MAX_MEMORY = 'Max Memory'
 KEY_MEAN_MEMORY = 'Mean Memory'
 KEY_READ_OPS = 'Read Ops'
@@ -23,6 +25,8 @@ def parse_log(path):
     row = {
         KEY_INFERENCE_TIME: -1,
         KEY_NUM_ITERATIONS: -1,
+        KEY_NUM_VARIABLES: -1,
+        KEY_NUM_TERMS: -1,
         KEY_MAX_MEMORY: -1,
         KEY_MEAN_MEMORY: -1,
         KEY_READ_OPS: -1,
@@ -54,6 +58,18 @@ def parse_log(path):
             match = re.search(r'Inference complete. Writing results to Database.', line)
             if (match is not None):
                 row[KEY_INFERENCE_TIME] = time - inference_start
+                continue
+
+            match = re.search(r'Performing optimization with (\d+) variables and (\d+) terms.', line)
+            if (match is not None):
+                row[KEY_NUM_VARIABLES] = int(match.group(1))
+                row[KEY_NUM_TERMS] = int(match.group(2))
+                continue
+
+            match = re.search(r'Optimized with (\d+) variables and (\d+) terms.', line)
+            if (match is not None):
+                row[KEY_NUM_VARIABLES] = int(match.group(1))
+                row[KEY_NUM_TERMS] = int(match.group(2))
                 continue
 
             match = re.search(r'Total Memory \(bytes\)\s+-- Min:\s*(\d+), Max:\s*(\d+), Mean:\s*(\d+), Count:\s*(\d+)', line)
