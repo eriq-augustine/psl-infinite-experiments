@@ -10,6 +10,8 @@ PSL_TIMING_FILENAME = 'time.txt'
 KEY_ITERATION = 'Iteration'
 KEY_DATASET = 'Dataset'
 KEY_METHOD = 'Method'
+KEY_PAGESIZE = 'Page Size'
+KEY_SHUFFLE = 'Shuffle'
 KEY_INFERENCE_TIME = 'Inference Time'
 KEY_NUM_ITERATIONS = 'Inference Iterations'
 KEY_NUM_VARIABLES = 'Variables'
@@ -124,7 +126,19 @@ def parse_dir(results_dir):
 
                 row[KEY_ITERATION] = int(iteration)
                 row[KEY_DATASET] = dataset
+
+                page_size = -1
+                shuffle = True
+
+                match = re.search(r'(sgd_streaming)_(\d+)(_noshuffle)?', method)
+                if (match is not None):
+                    method = match.group(1)
+                    page_size = int(match.group(2))
+                    shuffle = (match.group(3) is None)
+
                 row[KEY_METHOD] = method
+                row[KEY_PAGESIZE] = page_size
+                row[KEY_SHUFFLE] = shuffle
 
                 rows.append(row)
 
