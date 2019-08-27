@@ -1,0 +1,14 @@
+predicates:
+   Similar/2: closed
+   Block/2: closed
+   Friends/2: open
+
+observations:
+   Block: ../data/friendship-1B/location_obs.txt
+   Similar: ../data/friendship-1B/similar_obs.txt
+
+targets:
+   Friends: ../data/friendship-1B/friends_targets.txt
+
+truth:
+   Friends: ../data/friendship-1B/friends_truth.txt
