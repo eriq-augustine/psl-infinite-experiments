@@ -10,7 +10,7 @@ readonly FETCH_DATA_SCRIPT='../data/fetchData.sh'
 readonly BASE_NAME='friendship-500M'
 
 readonly ADDITIONAL_PSL_OPTIONS=''
-readonly ADDITIONAL_EVAL_OPTIONS='--infer --eval CategoricalEvaluator -D categoricalevaluator.categoryindexes=1'
+readonly ADDITIONAL_EVAL_OPTIONS='--infer'
 
 function main() {
    trap exit SIGINT
