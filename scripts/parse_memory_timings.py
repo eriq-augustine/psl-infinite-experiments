@@ -13,6 +13,7 @@ KEY_METHOD = 'Method'
 KEY_PAGESIZE = 'Page Size'
 KEY_SHUFFLE = 'Shuffle'
 KEY_INFERENCE_TIME = 'Inference Time'
+KEY_NON_FIRST_INFERENCE_TIME = 'Non-First Inference Time'
 KEY_NUM_ITERATIONS = 'Inference Iterations'
 KEY_NUM_VARIABLES = 'Variables'
 KEY_NUM_TERMS = 'Terms'
@@ -26,6 +27,7 @@ KEY_WRITE_BYTES = 'Write Bytes'
 def parse_log(path):
     row = {
         KEY_INFERENCE_TIME: -1,
+        KEY_NON_FIRST_INFERENCE_TIME: -1,
         KEY_NUM_ITERATIONS: -1,
         KEY_NUM_VARIABLES: -1,
         KEY_NUM_TERMS: -1,
@@ -36,6 +38,8 @@ def parse_log(path):
         KEY_WRITE_OPS: -1,
         KEY_WRITE_BYTES: -1,
     }
+
+    second_round_inference_start = None
 
     with open(path, 'r') as file:
         for line in file:
@@ -52,6 +56,11 @@ def parse_log(path):
                 inference_start = time
                 continue
 
+            match = re.search(r'- objective:2,', line)
+            if (match is not None):
+                second_round_inference_start = time
+                continue
+
             match = re.search(r'Optimization completed in (\d+) iterations.', line)
             if (match is not None):
                 row[KEY_NUM_ITERATIONS] = int(match.group(1))
@@ -60,6 +69,10 @@ def parse_log(path):
             match = re.search(r'Inference complete. Writing results to Database.', line)
             if (match is not None):
                 row[KEY_INFERENCE_TIME] = time - inference_start
+
+                if (second_round_inference_start is not None):
+                    row[KEY_NON_FIRST_INFERENCE_TIME] = time - second_round_inference_start
+
                 continue
 
             match = re.search(r'Performing optimization with (\d+) variables and (\d+) terms.', line)
