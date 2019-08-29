@@ -18,7 +18,7 @@ readonly ER_DATA_SZIE='large'
 
 readonly AVAILABLE_MEM_KB=$(cat /proc/meminfo | grep 'MemTotal' | sed 's/^[^0-9]\+\([0-9]\+\)[^0-9]\+$/\1/')
 # Floor by multiples of 5 and then reserve an additional 5 GB.
-readonly JAVA_MEM_GB=$((32886836 / 1024 / 1024 / 5 * 5 - 5))
+readonly JAVA_MEM_GB=$((${AVAILABLE_MEM_KB} / 1024 / 1024 / 5 * 5 - 5))
 
 function fetch_psl_examples() {
    if [ -e ${PSL_EXAMPLES_DIR} ]; then
